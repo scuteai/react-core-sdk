@@ -4,6 +4,7 @@ import { scuteClient } from "../scute";
 export const SignInOrUp = ({ success }) => {
   const [email, setEmail] = useState("");
   const [metaFields, setMetaFields] = useState({});
+  const [oauthProviders, setOauthProviders] = useState([]);
   const [signed, setSigned] = useState(false);
 
   useEffect(() => {
@@ -17,6 +18,9 @@ export const SignInOrUp = ({ success }) => {
       if (!data.user_meta_data_schema || data.user_meta_data_schema === 0) {
         return;
       }
+
+      setOauthProviders(data.oauth_providers || []);
+      console.log({ data });
 
       const metaFormData = data.user_meta_data_schema.reduce(
         (acc, field) => ({
@@ -91,6 +95,27 @@ export const SignInOrUp = ({ success }) => {
         >
           Sign In or Sign Up
         </button>
+        <div>
+          {oauthProviders.map((provider) => (
+            <button
+              key={provider.id}
+              onClick={() => scuteClient.signInWithOAuthProvider(provider.id)}
+              style={{
+                display: "flex",
+                alignItems: "center",
+                padding: 4,
+                marginTop: 8,
+              }}
+            >
+              <img
+                src={`https://api.scute.io/${provider.icon}`}
+                alt={provider.name}
+                style={{ width: "auto", height: 16, marginRight: 4 }}
+              />
+              {provider.name}
+            </button>
+          ))}
+        </div>
       </div>
     </div>
   );
