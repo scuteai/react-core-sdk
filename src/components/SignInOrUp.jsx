@@ -112,7 +112,7 @@ export const SignInOrUp = ({ success }) => {
                 alt={provider.name}
                 style={{ width: "auto", height: 16, marginRight: 4 }}
               />
-              {provider.name}
+              Sign In with {provider.name}
             </button>
           ))}
         </div>
